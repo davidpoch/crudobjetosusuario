@@ -1,0 +1,106 @@
+<?php
+include_once($viewVar['helper'].'/forms.php');
+$sql="SELECT * FROM countries";
+$result=query($viewVar['link'], $sql);
+$htmlCountries=htmlSelectFromDB('country', 'idcountries', 'country', $result, $viewVar['datos']);
+$sql="SELECT * FROM cities";
+$result=query($viewVar['link'], $sql);
+$htmlCities=htmlSelectFromDB('city', 'idcities', 'city', $result, $viewVar['datos']);
+
+$sql="SELECT * FROM genders";
+$result=query($viewVar['link'], $sql);
+$htmlSexo=htmlRadioFromDB('gender', 'idgenders', 'gender', $result, $viewVar['datos']);
+
+$sql="SELECT * FROM transports";
+$result=query($viewVar['link'], $sql);
+$htmlTransports=htmlSelectMultipleFromDB('transports', 'idtransports', 'transport', $result, $viewVar['datos']);
+
+
+?>
+<?="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <div>Formulario de contacto</div>
+        <div>
+        <form action="?controller=usuarios&action=insert" method="POST"
+              enctype="multipart/form-data">
+            <ul>
+                <li>
+                    foto: 
+                    <input name="photo" type="file" />
+                </li>
+                <li>
+                    id: 
+                    <input name="id"  value="<?=$viewVar['datos']['id']?>" type="hidden" />
+                     <input name="usuario"  value="<?=$viewVar['usuario'];?>" type="hidden" />
+                </li>                
+                <li>
+                    contraseña: 
+                    <input name="password"  type="password" maxlength="10" size="50"/>
+                </li>
+                <li>
+                    nombres: 
+                    <input name="name"  type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['name']?>"/>
+                </li>
+                <li>
+                    apellidos:
+                    <input name="lastname" type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['lastname']?>"/>
+                </li>
+                <li>
+                    email: 
+                     <input name="email"  type="text" maxlength="255" size="50" value="<?=$viewVar['datos']['email']?>"/>
+                </li>
+                
+                <li>
+                    fecha de nacimiento: [yyyy-mm-dd]
+                    <input name="birthday" type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['birthday']?>"/>
+                </li>    
+                <li>
+                    sexo:
+                    <?=$htmlSexo;?>   
+                    H:<input type="radio" name="gender" value="h" <?=($viewVar['datos']['gender']=='h')?'checked':'';?>>
+                    M:<input type="radio" name="gender" value="m" <?=($viewVar['datos']['gender']=='m')?'checked':'';?>>
+                    O:<input type="radio" name="gender" value="o" <?=($viewVar['datos']['gender']=='o')?'checked':'';?>>
+                </li>    
+                <li>
+                    descripción:
+                    <textarea name="description"><?=$viewVar['datos']['description']?></textarea>
+                </li>    
+                <li>
+                    gustos:
+                    cine:<input type="checkbox" name="likes[]" value="cine" <?=(strpos($viewVar['datos']['likes'],"cine")!==FALSE)?'checked':'';?>>
+                    música:<input type="checkbox" name="likes[]" value="musica" <?=(strpos($viewVar['datos']['likes'],"musica")!==FALSE)?'checked':'';?>>
+                    cocina:<input type="checkbox" name="likes[]" value="cocina"<?=(strpos($viewVar['datos']['likes'],"cocina")!==FALSE)?'checked':'';?> >
+                </li>    
+                <li>
+                    transporte:
+                    <?=$htmlTransports;?> 
+                    <select name="transports[]" multiple size="5">                        
+                        <option value="bici" <?=(strpos($viewVar['datos']['transports'],"bici")!==FALSE)?'selected':'';?>>Bicicleta</option>
+                        <option value="metro" <?=(strpos($viewVar['datos']['transports'],"metro")!==FALSE)?'selected':'';?>>Metro</option>
+                        <option value="tren" <?=(strpos($viewVar['datos']['transports'],"tren")!==FALSE)?'selected':'';?>>Tres</option>                        
+                    </select>
+                </li>    
+                <li>
+                    pais:
+                    <?=$htmlCountries;?>                    
+                </li>    
+                <li>
+                    ciudad:
+                    <?=$htmlCities;?>                     
+                </li>
+                <li>
+                    Enviar:
+                    <input type="submit" value="Enviar" name="sub"/>
+                </li>
+             
+            </ul>
+        </form>
+        </div>
+    </body>
+</html>

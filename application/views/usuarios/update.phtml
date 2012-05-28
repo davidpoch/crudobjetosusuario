@@ -1,0 +1,103 @@
+<?php
+
+include_once($viewVar['helper'].'/forms.php');
+
+$sql="SELECT * FROM countries";
+$result=$viewVar['link'] -> query($sql);
+$htmlCountries=htmlSelectFromDB('country', 'idcountries', 'nameP', $result, $viewVar['datos'],$viewVar['link']);
+
+$sql="SELECT * FROM cities";
+$result=$viewVar['link'] -> query($sql);
+$htmlCities=htmlSelectFromDB('city', 'idcities', 'name', $result, $viewVar['datos'],$viewVar['link']);
+
+$sql="SELECT * FROM genders";
+$result=$viewVar['link'] -> query($sql);
+$htmlSexo=htmlRadioFromDB('gender', 'idgenders', 'name', $result, $viewVar['datos'],$viewVar['link']);
+
+$sql="SELECT * FROM transports";
+$result=$viewVar['link'] -> query($sql);
+$htmlTransports=htmlSelectMultipleFromDB('transports', 'idtransports', 'name', $result, $viewVar['datos'],$viewVar['link']);
+
+$sql="SELECT * FROM likes";
+$result=$viewVar['link'] -> query($sql);
+$htmlLikes=htmlCheckboxFromDB('likes', 'idlikes', 'name', $result, $viewVar['datos'],$viewVar['link']);
+;
+
+?>
+<?="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <div>Formulario de contacto</div>
+        <div>
+        <form action="?controller=usuarios&action=update" method="POST"
+              enctype="multipart/form-data">
+            <ul>
+                <li>
+                    foto: 
+                    <img src="<?=$viewVar['datos']['photo']?>" width="100px"/>
+                    <input name="photo" type="file" />
+                </li>
+                <li>
+                    usuario: 
+                     <input name="usuario"  value="<?=$viewVar['datos']['id']?>" type="hidden" />
+                </li>                
+                <li>
+                    contraseña: 
+                    <input name="password"  type="password" maxlength="10" size="50"/>
+                </li>
+                <li>
+                    nombres: 
+                    <input name="name"  type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['name']?>"/>
+                </li>
+                <li>
+                    apellidos:
+                    <input name="lastname" type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['surname']?>"/>
+                </li>
+                <li>
+                    email: 
+                     <input name="email"  type="text" maxlength="255" size="50" value="<?=$viewVar['datos']['email']?>"/>
+                </li>
+                
+                <li>
+                    fecha de nacimiento: [yyyy-mm-dd]
+                    <input name="birthday" type="text" maxlength="10" size="50" value="<?=$viewVar['datos']['birthday']?>"/>
+                </li>    
+                <li>
+                    sexo:
+                    <?=$htmlSexo;?>                       
+                </li>    
+                <li>
+                    descripción:
+                    <textarea name="description"><?=$viewVar['datos']['description']?></textarea>
+                </li>    
+                <li>
+                    gustos:
+                    <?=$htmlLikes;?>                     
+                </li>    
+                <li>
+                    transporte:
+                    <?=$htmlTransports;?>                     
+                </li>    
+                <li>
+                    pais:
+                    <?=$htmlCountries;?>                    
+                </li>    
+                <li>
+                    ciudad:
+                    <?=$htmlCities;?>                     
+                </li>
+                <li>
+                    Enviar:
+                    <input type="submit" value="Enviar" name="sub"/>
+                </li>
+             
+            </ul>
+        </form>
+        </div>
+    </body>
+</html>

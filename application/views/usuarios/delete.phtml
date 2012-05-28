@@ -1,0 +1,10 @@
+Estas seguro que quieres eliminar al usuario:
+<h3><?=$viewVar['usuarios'][0]['name'];?> </h3>
+<form method="POST" action="?controller=usuarios&action=delete">
+      <input type="submit" name="delete" value="Si"/>                
+      <input type="submit" name="delete" value="No"/>
+      <input type="hidden" name="usuario" value="
+            <?=$viewVar['usuarios'][0]['idusers'];?>" 
+      />
+</form>
+<a href=index.php?controller=usuarios&action=select>Cancel</a>

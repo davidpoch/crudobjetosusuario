@@ -1,0 +1,103 @@
+<?php
+
+
+
+
+
+$link=connectDBServer($config);
+$sql="SELECT * FROM countries";
+$result=query($link, $sql);
+$htmlCountries=htmlSelectFromDB('country', 'idcountries', 'country', $result, $datos);
+$sql="SELECT * FROM cities";
+$result=query($link, $sql);
+$htmlCities=htmlSelectFromDB('city', 'idcities', 'city', $result, $datos);
+disconnectDBServer($link);
+
+?>
+
+
+<?="<?xml version=\"1.0\" encoding=\"UTF-8\"?>";?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <div>Formulario de contacto</div>
+        <div>
+        <form action="?action=insert" method="POST"
+              enctype="multipart/form-data">
+            <ul>
+                <li>
+                    foto: 
+                    <input name="photo" type="file" />
+                </li>
+                <li>
+                    id: 
+                    <input name="id"  value="<?=$datos['id']?>" type="hidden" />
+                     <input name="usuario"  value="<?=$usuario;?>" type="hidden" />
+                </li>                
+                <li>
+                    contraseña: 
+                    <input name="password"  type="password" maxlength="10" size="50"/>
+                </li>
+                <li>
+                    nombres: 
+                    <input name="name"  type="text" maxlength="10" size="50" value="<?=$datos['name']?>"/>
+                </li>
+                <li>
+                    apellidos:
+                    <input name="lastname" type="text" maxlength="10" size="50" value="<?=$datos['lastname']?>"/>
+                </li>
+                <li>
+                    email: 
+                     <input name="email"  type="text" maxlength="255" size="50" value="<?=$datos['email']?>"/>
+                </li>
+                
+                <li>
+                    edad:
+                    <input name="birthday" type="text" maxlength="10" size="50" value="<?=$datos['birthday']?>"/>
+                </li>    
+                <li>
+                    sexo:
+                    H:<input type="radio" name="gender" value="h" <?=($datos['gender']=='h')?'checked':'';?>>
+                    M:<input type="radio" name="gender" value="m" <?=($datos['gender']=='m')?'checked':'';?>>
+                    O:<input type="radio" name="gender" value="o" <?=($datos['gender']=='o')?'checked':'';?>>
+                </li>    
+                <li>
+                    descripción:
+                    <textarea name="description"><?=$datos['description']?></textarea>
+                </li>    
+                <li>
+                    gustos:
+                    cine:<input type="checkbox" name="likes[]" value="cine" <?=(strpos($datos['likes'],"cine")!==FALSE)?'checked':'';?>>
+                    música:<input type="checkbox" name="likes[]" value="musica" <?=(strpos($datos['likes'],"musica")!==FALSE)?'checked':'';?>>
+                    cocina:<input type="checkbox" name="likes[]" value="cocina"<?=(strpos($datos['likes'],"cocina")!==FALSE)?'checked':'';?> >
+                </li>    
+                <li>
+                    transporte:
+                    <select name="transports[]" multiple size="5">
+                        <option value="bici" <?=(strpos($datos['transports'],"bici")!==FALSE)?'selected':'';?>>Bicicleta</option>
+                        <option value="metro" <?=(strpos($datos['transports'],"metro")!==FALSE)?'selected':'';?>>Metro</option>
+                        <option value="tren" <?=(strpos($datos['transports'],"tren")!==FALSE)?'selected':'';?>>Tres</option>                        
+                    </select>
+                </li>    
+                <li>
+                    pais:
+                    <?=$htmlCountries;?>                    
+                </li>    
+                <li>
+                    ciudad:
+                    <?=$htmlCities;?>                     
+                </li>
+                <li>
+                    Enviar:
+                    <input type="submit" value="Enviar" name="sub"/>
+                </li>
+             
+            </ul>
+        </form>
+        </div>
+    </body>
+</html>
